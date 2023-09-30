@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Chenjia Kuang">
+
+<title>Lab5</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Lab5_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Lab5_files/libs/quarto-html/quarto.js"></script>
+<script src="Lab5_files/libs/quarto-html/popper.min.js"></script>
+<script src="Lab5_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Lab5_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Lab5_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Lab5_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Lab5_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Lab5_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Lab5_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="Lab5_files/libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="Lab5_files/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="Lab5_files/libs/leaflet-1.3.1/leaflet.css" rel="stylesheet">
+<script src="Lab5_files/libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="Lab5_files/libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet">
+<script src="Lab5_files/libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="Lab5_files/libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="Lab5_files/libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet">
+<script src="Lab5_files/libs/leaflet-binding-2.2.0/leaflet.js"></script>
+<script src="Lab5_files/libs/leaflet-providers-1.13.0/leaflet-providers_1.13.0.js"></script>
+<script src="Lab5_files/libs/leaflet-providers-plugin-2.2.0/leaflet-providers-plugin.js"></script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lab5</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Chenjia Kuang </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="setup-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="setup-in-r">Setup in R</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'R.utils'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: R.oo</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: R.methodsS3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>R.methodsS3 v1.8.2 (2022-06-13 22:00:14 UTC) successfully loaded. See ?R.methodsS3 for help.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>R.oo v1.25.0 (2022-06-12 02:20:02 UTC) successfully loaded. See ?R.oo for help.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'R.oo'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:R.methodsS3':
+
+    throw</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:methods':
+
+    getClasses, getMethods</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    attach, detach, load, save</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>R.utils v2.12.2 (2022-11-11 22:00:03 UTC) successfully loaded. See ?R.utils for help.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'R.utils'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:utils':
+
+    timestamp</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    cat, commandArgs, getOption, isOpen, nullfile, parse, warnings</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'tidyverse'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.3     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.3     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ tidyr::extract() masks R.utils::extract()
+✖ dplyr::filter()  masks stats::filter()
+✖ dplyr::lag()     masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'ggplot2'</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'data.table'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'data.table'
+
+The following objects are masked from 'package:lubridate':
+
+    hour, isoweek, mday, minute, month, quarter, second, wday, week,
+    yday, year
+
+The following objects are masked from 'package:dplyr':
+
+    between, first, last
+
+The following object is masked from 'package:purrr':
+
+    transpose</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'dtplyr'</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">'dplyr'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the data</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>stations <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">"ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.csv"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>stations[, USAF <span class="sc">:</span><span class="er">=</span> <span class="fu">as.integer</span>(USAF)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in eval(jsub, SDenv, parent.frame()): NAs introduced by coercion</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dealing with NAs and 999999</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>stations[, USAF   <span class="sc">:</span><span class="er">=</span> <span class="fu">fifelse</span>(USAF <span class="sc">==</span> <span class="dv">999999</span>, <span class="cn">NA_integer_</span>, USAF)]</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>stations[, CTRY   <span class="sc">:</span><span class="er">=</span> <span class="fu">fifelse</span>(CTRY <span class="sc">==</span> <span class="st">""</span>, <span class="cn">NA_character_</span>, CTRY)]</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>stations[, STATE  <span class="sc">:</span><span class="er">=</span> <span class="fu">fifelse</span>(STATE <span class="sc">==</span> <span class="st">""</span>, <span class="cn">NA_character_</span>, STATE)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Selecting the three relevant columns, and keeping unique records</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>stations <span class="ot">&lt;-</span> <span class="fu">unique</span>(stations[, <span class="fu">list</span>(USAF, CTRY, STATE)])</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Dropping NAs</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>stations <span class="ot">&lt;-</span> stations[<span class="sc">!</span><span class="fu">is.na</span>(USAF)]</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Removing duplicates</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>stations[, n <span class="sc">:</span><span class="er">=</span> <span class="dv">1</span><span class="sc">:</span>.N, by <span class="ot">=</span> .(USAF)]</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>stations <span class="ot">&lt;-</span> stations[n <span class="sc">==</span> <span class="dv">1</span>,][, n <span class="sc">:</span><span class="er">=</span> <span class="cn">NULL</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Merge the data</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"/Users/chenjiak/Downloads"</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>met <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">fread</span>(<span class="st">"met_all.gz"</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>met <span class="ot">&lt;-</span> <span class="fu">merge</span>(</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> met,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> stations,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">by.x =</span> <span class="st">"USAFID"</span>,</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">by.y =</span> <span class="st">"USAF"</span>,</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">all.x =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">all.y =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(met[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="fu">list</span>(USAFID, WBAN, STATE)], <span class="at">n=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   USAFID  WBAN STATE
+1: 690150 93121    CA
+2: 690150 93121    CA
+3: 690150 93121    CA
+4: 690150 93121    CA</code></pre>
+</div>
+</div>
+</section>
+<section id="q1-representative-station-for-the-us" class="level2">
+<h2 class="anchored" data-anchor-id="q1-representative-station-for-the-us"><strong>Q1: Representative station for the US</strong></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Find the median station</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>met_stations <span class="ot">&lt;-</span> met[, .(</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">temp      =</span> <span class="fu">median</span>(temp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">wind.sp   =</span> <span class="fu">median</span>(wind.sp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">atm.press =</span> <span class="fu">median</span>(atm.press, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  ), by <span class="ot">=</span> .(USAFID, STATE)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Usng the quantile() function</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>met_stations[, temp_50<span class="sc">:</span><span class="er">=</span> <span class="fu">quantile</span>(temp, <span class="at">probs =</span> <span class="fl">0.5</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)]</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>met_stations[, wind.sp_50<span class="sc">:</span><span class="er">=</span> <span class="fu">quantile</span>(wind.sp, <span class="at">probs =</span> <span class="fl">0.5</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)]</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>met_stations[, atm.press_50<span class="sc">:</span><span class="er">=</span> <span class="fu">quantile</span>(atm.press, <span class="at">probs =</span> <span class="fl">0.5</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>met_stations[<span class="fu">which.min</span>(<span class="fu">abs</span>(temp <span class="sc">-</span> temp_50))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   USAFID STATE temp wind.sp atm.press temp_50 wind.sp_50 atm.press_50
+1: 720277    NC   23     1.5        NA      23        2.6       1014.6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>met_stations[<span class="fu">which.min</span>(<span class="fu">abs</span>(wind.sp <span class="sc">-</span> wind.sp_50))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   USAFID STATE temp wind.sp atm.press temp_50 wind.sp_50 atm.press_50
+1: 720113    MI 23.2     2.6        NA      23        2.6       1014.6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>met_stations[<span class="fu">which.min</span>(<span class="fu">abs</span>(atm.press <span class="sc">-</span> atm.press_50))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   USAFID STATE temp wind.sp atm.press temp_50 wind.sp_50 atm.press_50
+1: 720394    AR 25.6       0    1014.6      23        2.6       1014.6</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co">#These three stations are not coincide.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="q2-representative-station-per-state" class="level2">
+<h2 class="anchored" data-anchor-id="q2-representative-station-per-state"><strong>Q2: Representative station per state</strong></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Find the median station for each state</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>met_stations[, temp_50_2<span class="sc">:</span><span class="er">=</span> <span class="fu">quantile</span>(temp, <span class="at">probs =</span> <span class="fl">0.5</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), by <span class="ot">=</span> STATE]</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>met_stations[, wind.sp_50<span class="fl">.2</span><span class="sc">:</span><span class="er">=</span> <span class="fu">quantile</span>(wind.sp, <span class="at">probs =</span> <span class="fl">0.5</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), by <span class="ot">=</span> STATE]</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>met_stations[, atm.press_50_2<span class="sc">:</span><span class="er">=</span> <span class="fu">quantile</span>(atm.press, <span class="at">probs =</span> <span class="fl">0.5</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), by <span class="ot">=</span> STATE]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>met_stations[, tempdif<span class="sc">:</span><span class="er">=</span> <span class="fu">which.min</span>(<span class="fu">abs</span>(temp <span class="sc">-</span> temp_50_2)), by <span class="ot">=</span> STATE]</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>met_stations[, recordid <span class="sc">:</span><span class="er">=</span> <span class="dv">1</span><span class="sc">:</span>.N, by <span class="ot">=</span> STATE]</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>met_temp <span class="ot">&lt;-</span> met_stations[recordid <span class="sc">==</span> tempdif, .(USAFID, temp, temp_50_2, STATE)]</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>met_temp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    USAFID temp temp_50_2 STATE
+ 1: 720202 17.0    17.500    OR
+ 2: 720261 29.1    29.050    TX
+ 3: 720272 18.0    18.000    WA
+ 4: 720293 21.0    21.000    IA
+ 5: 720373 27.0    27.100    FL
+ 6: 720377 25.0    25.300    AR
+ 7: 720458 23.2    23.150    KY
+ 8: 720479 23.0    23.150    MO
+ 9: 720501 23.5    23.500    VA
+10: 720545 22.0    21.850    CT
+11: 720596 25.0    25.000    SC
+12: 720737 18.0    18.000    ND
+13: 720859 18.9    18.900    WI
+14: 720902 20.7    20.700    MI
+15: 720967 27.0    27.100    LA
+16: 720974 24.0    24.000    TN
+17: 722076 22.2    22.200    IL
+18: 722142 20.0    19.700    ID
+19: 722166 25.6    25.600    GA
+20: 722269 25.4    25.200    AL
+21: 722340 25.6    25.600    MS
+22: 722689 24.4    24.400    NM
+23: 722747 30.6    30.300    AZ
+24: 722874 21.7    21.700    CA
+25: 723060 23.9    23.900    NC
+26: 723526 26.7    26.700    OK
+27: 724043 24.1    24.100    MD
+28: 724088 24.3    24.300    DE
+29: 724090 23.3    23.300    NJ
+30: 724175 21.7    21.400    WV
+31: 724200 21.7    21.700    OH
+32: 724356 22.2    22.100    IN
+33: 724475 23.3    23.300    KS
+34: 724694 20.8    20.700    CO
+35: 724885 24.7    24.550    NV
+36: 724988 20.6    20.600    NY
+37: 725064 21.7    21.700    MA
+38: 725070 22.2    22.200    RI
+39: 725165 18.9    18.900    VT
+40: 725204 21.2    21.200    PA
+41: 725525 21.7    21.700    NE
+42: 725640 19.4    19.150    WY
+43: 725724 24.4    24.225    UT
+44: 726050 20.0    19.700    NH
+45: 726073 18.9    18.900    ME
+46: 726440 19.4    19.500    MN
+47: 726590 20.0    20.000    SD
+48: 726777 18.3    18.300    MT
+    USAFID temp temp_50_2 STATE</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>met_stations[, tempdif<span class="sc">:</span><span class="er">=</span> <span class="fu">which.min</span>(<span class="fu">abs</span>(wind.sp <span class="sc">-</span> wind.sp_50<span class="fl">.2</span>)), by <span class="ot">=</span> STATE]</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>met_stations[recordid <span class="sc">==</span> tempdif, .(USAFID, wind.sp, wind.sp_50<span class="fl">.2</span>, <span class="at">by=</span>STATE)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    USAFID wind.sp wind.sp_50.2 by
+ 1: 720151     3.1         3.10 TX
+ 2: 720202     1.5         1.80 OR
+ 3: 720254     0.0         0.00 WA
+ 4: 720266     2.1         2.10 IN
+ 5: 720274     1.5         1.50 NC
+ 6: 720278     1.5         1.50 VA
+ 7: 720284     2.1         2.10 MI
+ 8: 720289     1.5         1.50 GA
+ 9: 720304     1.5         1.50 PA
+10: 720307     1.5         1.50 AL
+11: 720327     2.1         2.10 WI
+12: 720328     1.5         1.50 WV
+13: 720330     2.1         2.10 IL
+14: 720354     3.6         3.60 OK
+15: 720368     2.6         2.60 MN
+16: 720369     2.6         2.35 ID
+17: 720407     2.1         2.10 NJ
+18: 720422     3.6         3.60 KS
+19: 720447     2.1         2.10 KY
+20: 720479     2.6         2.35 MO
+21: 720491     3.6         3.60 ND
+22: 720492     1.5         1.50 VT
+23: 720529     3.1         3.10 CO
+24: 720541     1.5         1.50 MS
+25: 720545     2.1         2.10 CT
+26: 720587     1.5         1.50 LA
+27: 720596     1.5         1.50 SC
+28: 720614     2.6         2.60 CA
+29: 720624     3.6         3.60 SD
+30: 720643     2.6         2.60 IA
+31: 720904     2.6         2.60 FL
+32: 720944     2.6         2.60 OH
+33: 720971     3.6         3.60 WY
+34: 720974     1.5         1.50 TN
+35: 722098     2.1         2.10 NY
+36: 722211     3.1         3.10 NE
+37: 722218     2.1         2.10 MD
+38: 722256     2.6         2.60 MA
+39: 722676     3.6         3.60 NM
+40: 722720     3.1         3.10 AZ
+41: 723407     2.1         2.10 AR
+42: 723860     2.6         2.60 NV
+43: 724180     2.6         2.60 DE
+44: 724700     3.1         3.10 UT
+45: 725079     2.6         2.60 RI
+46: 726050     1.5         1.50 NH
+47: 726077     2.1         2.10 ME
+48: 726770     3.6         3.60 MT
+    USAFID wind.sp wind.sp_50.2 by</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>met_stations[, tempdif<span class="sc">:</span><span class="er">=</span> <span class="fu">which.min</span>(<span class="fu">abs</span>(atm.press <span class="sc">-</span> atm.press_50_2)), by <span class="ot">=</span> STATE]</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>met_stations[recordid <span class="sc">==</span> tempdif, .(USAFID, atm.press, atm.press_50_2, <span class="at">by =</span> STATE)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    USAFID atm.press atm.press_50_2 by
+ 1: 720254        NA             NA WA
+ 2: 720394   1014.60       1014.600 AR
+ 3: 720491        NA             NA ND
+ 4: 720964   1015.20       1015.200 FL
+ 5: 722137   1014.90       1014.900 GA
+ 6: 722142   1012.60       1012.600 ID
+ 7: 722230   1014.80       1014.800 AL
+ 8: 722320   1014.50       1014.500 LA
+ 9: 722358   1014.70       1014.700 MS
+10: 722479   1012.60       1012.600 TX
+11: 722745   1010.30       1010.300 AZ
+12: 722926   1012.90       1012.900 CA
+13: 723096   1015.50       1015.500 NC
+14: 723104   1015.30       1015.300 SC
+15: 723240   1015.10       1015.100 TN
+16: 723290   1014.70       1014.700 MO
+17: 723537   1012.80       1012.800 OK
+18: 723600   1012.30       1012.550 NM
+19: 724035   1015.25       1015.250 VA
+20: 724040   1014.80       1014.800 MD
+21: 724077   1015.20       1015.200 NJ
+22: 724085   1015.55       1015.525 PA
+23: 724088   1015.50       1015.500 DE
+24: 724120   1015.60       1015.600 WV
+25: 724200   1015.00       1015.000 OH
+26: 724220   1015.20       1015.250 KY
+27: 724586   1013.60       1013.600 KS
+28: 724765   1013.40       1013.400 CO
+29: 725040   1015.20       1015.200 CT
+30: 725064   1014.90       1014.900 MA
+31: 725070   1015.00       1014.950 RI
+32: 725156   1014.90       1014.900 NY
+33: 725314   1014.90       1014.900 IL
+34: 725330   1014.80       1014.800 IN
+35: 725396   1014.60       1014.575 MI
+36: 725465   1014.80       1014.800 IA
+37: 725636   1014.30       1014.325 NE
+38: 725686   1013.30       1013.300 WY
+39: 725755   1012.30       1012.100 UT
+40: 725805   1012.60       1012.400 NV
+41: 725895   1014.50       1015.350 OR
+42: 726060   1014.00       1014.050 ME
+43: 726114   1014.40       1014.400 VT
+44: 726155   1014.40       1014.400 NH
+45: 726419   1014.60       1014.600 WI
+46: 726539   1014.40       1014.350 SD
+47: 726555   1014.60       1014.600 MN
+48: 726777   1014.30       1014.300 MT
+    USAFID atm.press atm.press_50_2 by</code></pre>
+</div>
+</div>
+</section>
+<section id="q3-in-the-middle" class="level2">
+<h2 class="anchored" data-anchor-id="q3-in-the-middle"><strong>Q3: In the middle?</strong></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>met_stations <span class="ot">&lt;-</span> <span class="fu">unique</span>(met[, .(USAFID, STATE, lon, lat)])</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>met_stations[, n <span class="sc">:</span><span class="er">=</span> <span class="dv">1</span><span class="sc">:</span>.N, by <span class="ot">=</span> USAFID]</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>met_stations <span class="ot">&lt;-</span> met_stations[n <span class="sc">==</span> <span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>met_stations[, lat_mid <span class="sc">:</span><span class="er">=</span> <span class="fu">quantile</span>(lat, <span class="at">probs =</span> <span class="fl">0.5</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), by <span class="ot">=</span> STATE]</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>met_stations[, lon_mid <span class="sc">:</span><span class="er">=</span> <span class="fu">quantile</span>(lon, <span class="at">probs =</span> <span class="fl">0.5</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), by <span class="ot">=</span> STATE]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Calculate the distance</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>met_stations[,  distance <span class="sc">:</span><span class="er">=</span> <span class="fu">sqrt</span>((lat<span class="sc">-</span>lat_mid)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> (lon<span class="sc">-</span>lon_mid)<span class="sc">^</span><span class="dv">2</span>)]</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>met_stations[, minrecord <span class="sc">:</span><span class="er">=</span> <span class="fu">which.min</span>(distance), by <span class="ot">=</span> STATE]</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>met_stations[, n <span class="sc">:</span><span class="er">=</span> <span class="dv">1</span><span class="sc">:</span>.N, by <span class="ot">=</span> STATE]</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>met_location <span class="ot">&lt;-</span> met_stations[n <span class="sc">==</span> minrecord, .(USAFID, STATE, lon, lat)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>stations2 <span class="ot">&lt;-</span> met[, .(USAFID, lat, lon, STATE)][, .SD[<span class="dv">1</span>], by <span class="ot">=</span> <span class="st">"USAFID"</span>]</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>met_temp <span class="ot">&lt;-</span> <span class="fu">merge</span>(</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> met_temp,</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> stations2,</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">"USAFID"</span>,</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">all.x =</span> <span class="cn">TRUE</span>, <span class="at">all.y =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>dat1 <span class="ot">&lt;-</span> met_location[, .(lon, lat)]</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>dat1[, type <span class="sc">:</span><span class="er">=</span> <span class="st">"Center of the state"</span>]</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>dat2 <span class="ot">&lt;-</span> met_temp[, .(lon, lat)]</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>dat2[, type <span class="sc">:</span><span class="er">=</span> <span class="st">"Center of the temperature"</span>]</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(dat1, dat2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>rh_pal <span class="ot">&lt;-</span> <span class="fu">colorFactor</span>(<span class="fu">c</span>(<span class="st">'pink'</span>, <span class="st">'purple'</span>), <span class="at">domain =</span> <span class="fu">as.factor</span>(dat<span class="sc">$</span>type))</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">leaflet</span>(dat) <span class="sc">%&gt;%</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(<span class="st">"OpenStreetMap"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircles</span>(<span class="at">lng =</span> <span class="sc">~</span>lon, <span class="at">lat =</span> <span class="sc">~</span>lat, <span class="at">color=</span><span class="sc">~</span><span class="fu">rh_pal</span>(type), </span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">opacity=</span><span class="dv">1</span>,<span class="at">fillOpacity=</span><span class="dv">1</span>, <span class="at">radius=</span><span class="dv">500</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-44d32896f448cf872d8b" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-44d32896f448cf872d8b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addProviderTiles","args":["OpenStreetMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircles","args":[[39,47.104,35.6,37.578,30.558,37.4,34.283,48.39,40.28,28.29,32.633,35.582,32.383,32.317,31.083,35.003,33.467,36.009,35.417,36.319,39.326,39.133,40.033,40.483,38.704,38.058,39.601,41.51,41.876,41.597,40.217,41.702,40.648,43.322,41.691,40.967,40.219,43.5,42.367,44.533,44.534,43.567,39.05,44.359,44.381,44.859,43.067,45.8,45.417,33.175,48.467,42.453,28,35.638,37.751,36.9,37.85,41.384,34.3,47.451,44.251,43.067,30.718,35.178,40.2,44.523,30.783,31.267,32.333,34.425,32.855,34.024,35.867,35.357,38.804,39.133,40.033,39.296,40.82,39.578,38.832,39.785,39.417,42.571,41.91,41.733,43.533,40.767,40.601,41.15,40.219,43.2,44.533,43.917,45.45,46.358],[-80.274,-122.287,-92.45,-84.77,-92.099,-77.517,-80.56700000000001,-100.024,-83.11499999999999,-81.437,-83.60000000000001,-79.101,-86.35000000000001,-90.083,-97.68300000000001,-105.662,-111.733,-86.52,-97.383,-119.628,-76.414,-75.467,-74.35000000000001,-88.95,-93.18300000000001,-97.27500000000001,-116.005,-72.828,-71.021,-71.41200000000001,-76.851,-74.795,-86.152,-84.688,-93.566,-98.31700000000001,-111.723,-114.3,-122.867,-69.667,-72.614,-71.43300000000001,-105.516,-89.837,-100.285,-94.38200000000001,-108.45,-108.533,-123.817,-97.828,-122.416,-91.94800000000001,-82.164,-91.176,-82.637,-94.017,-76.883,-72.506,-81.633,-99.151,-90.855,-83.267,-91.479,-86.066,-87.60000000000001,-114.215,-83.277,-85.717,-88.75,-103.079,-109.635,-118.291,-78.783,-99.20400000000001,-76.069,-75.467,-74.35000000000001,-80.229,-82.518,-85.803,-94.89,-104.543,-118.716,-77.71300000000001,-70.729,-71.43300000000001,-72.95,-80.40000000000001,-98.426,-104.8,-111.723,-71.5,-69.667,-92.5,-98.417,-104.25],500,null,null,{"interactive":true,"className":"","stroke":true,"color":["#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0"],"weight":5,"opacity":1,"fill":true,"fillColor":["#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#FFC0CB","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0","#A020F0"],"fillOpacity":1},null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"limits":{"lat":[28,48.467],"lng":[-123.817,-69.667]}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="q4-means-of-means" class="level2">
+<h2 class="anchored" data-anchor-id="q4-means-of-means"><strong>Q4: Means of means</strong></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Compute the average temperature for each state</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>temp_ave <span class="ot">&lt;-</span> met[, .(<span class="at">temp_ave =</span> <span class="fu">mean</span>(temp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)), by <span class="ot">=</span> STATE]</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Classify the states based on the given temperature criteria</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>temp_ave[, temp_ave_level <span class="sc">:</span><span class="er">=</span> <span class="fu">fifelse</span>(temp_ave <span class="sc">&lt;</span> <span class="dv">20</span>, <span class="st">"low"</span>,</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>         <span class="fu">fifelse</span>(temp_ave <span class="sc">&gt;=</span> <span class="dv">20</span> <span class="sc">&amp;</span> temp_ave <span class="sc">&lt;</span> <span class="dv">25</span>, <span class="st">"Mid"</span>, <span class="st">"High"</span>))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>met[, temp_ave <span class="sc">:</span><span class="er">=</span> <span class="fu">fcoalesce</span>(temp, <span class="fu">mean</span>(temp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>      by <span class="ot">=</span> STATE]</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>met_ldt <span class="ot">&lt;-</span> <span class="fu">lazy_dt</span>(met, <span class="at">immutable =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>met_ldt <span class="sc">%&gt;%</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(STATE, year, month, day) <span class="sc">%&gt;%</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">temp_ave2 =</span> <span class="fu">coalesce</span>(temp, <span class="fu">mean</span>(temp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> <span class="fu">collect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2,377,343 × 34
+# Groups:   STATE, year, month, day [1,488]
+   USAFID  WBAN  year month   day  hour   min   lat   lon  elev wind.dir
+    &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;    &lt;int&gt;
+ 1 690150 93121  2019     8     1     0    56  34.3 -116.   696      220
+ 2 690150 93121  2019     8     1     1    56  34.3 -116.   696      230
+ 3 690150 93121  2019     8     1     2    56  34.3 -116.   696      230
+ 4 690150 93121  2019     8     1     3    56  34.3 -116.   696      210
+ 5 690150 93121  2019     8     1     4    56  34.3 -116.   696      120
+ 6 690150 93121  2019     8     1     5    56  34.3 -116.   696       NA
+ 7 690150 93121  2019     8     1     6    56  34.3 -116.   696      320
+ 8 690150 93121  2019     8     1     7    56  34.3 -116.   696       10
+ 9 690150 93121  2019     8     1     8    56  34.3 -116.   696      320
+10 690150 93121  2019     8     1     9    56  34.3 -116.   696      350
+# ℹ 2,377,333 more rows
+# ℹ 23 more variables: wind.dir.qc &lt;chr&gt;, wind.type.code &lt;chr&gt;, wind.sp &lt;dbl&gt;,
+#   wind.sp.qc &lt;chr&gt;, ceiling.ht &lt;int&gt;, ceiling.ht.qc &lt;int&gt;,
+#   ceiling.ht.method &lt;chr&gt;, sky.cond &lt;chr&gt;, vis.dist &lt;int&gt;, vis.dist.qc &lt;chr&gt;,
+#   vis.var &lt;chr&gt;, vis.var.qc &lt;chr&gt;, temp &lt;dbl&gt;, temp.qc &lt;chr&gt;,
+#   dew.point &lt;dbl&gt;, dew.point.qc &lt;chr&gt;, atm.press &lt;dbl&gt;, atm.press.qc &lt;int&gt;,
+#   rh &lt;dbl&gt;, CTRY &lt;chr&gt;, STATE &lt;chr&gt;, temp_ave &lt;dbl&gt;, temp_ave2 &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>summary_table <span class="ot">&lt;-</span> met[temp_ave, on <span class="ot">=</span> <span class="st">"STATE"</span>, nomatch <span class="ot">=</span> <span class="dv">0</span>][, .(</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">temp_ave =</span> <span class="fu">mean</span>(temp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">wind.sp_ave =</span> <span class="fu">mean</span>(wind.sp, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">atm.press_ave =</span> <span class="fu">mean</span>(atm.press, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>  ), by <span class="ot">=</span> temp_ave_level]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
