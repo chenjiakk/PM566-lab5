@@ -1,0 +1,193 @@
+---
+title: "Lab5"
+author: "Chenjia Kuang"
+format: html
+editor: visual
+---
+
+## Setup in R
+
+```{r}
+library('R.utils')
+library('tidyverse')
+library('ggplot2')
+library('data.table')
+library('dtplyr')
+library('dplyr')
+```
+
+```{r}
+# Download the data
+stations <- fread("ftp://ftp.ncdc.noaa.gov/pub/data/noaa/isd-history.csv")
+stations[, USAF := as.integer(USAF)]
+```
+
+```{r}
+# Dealing with NAs and 999999
+stations[, USAF   := fifelse(USAF == 999999, NA_integer_, USAF)]
+stations[, CTRY   := fifelse(CTRY == "", NA_character_, CTRY)]
+stations[, STATE  := fifelse(STATE == "", NA_character_, STATE)]
+```
+
+```{r}
+# Selecting the three relevant columns, and keeping unique records
+stations <- unique(stations[, list(USAF, CTRY, STATE)])
+
+# Dropping NAs
+stations <- stations[!is.na(USAF)]
+
+# Removing duplicates
+stations[, n := 1:.N, by = .(USAF)]
+stations <- stations[n == 1,][, n := NULL]
+```
+
+```{r}
+#Merge the data
+setwd("/Users/chenjiak/Downloads")
+met <- data.table::fread("met_all.gz")
+
+met <- merge(
+  x = met,
+  y = stations,
+  by.x = "USAFID",
+  by.y = "USAF",
+  all.x = TRUE,
+  all.y = FALSE)
+
+head(met[1:5, list(USAFID, WBAN, STATE)], n=4)
+
+```
+
+## **Q1: Representative station for the US**
+
+```{r}
+#Find the median station
+met_stations <- met[, .(
+  temp      = median(temp, na.rm = TRUE),
+  wind.sp   = median(wind.sp, na.rm = TRUE),
+  atm.press = median(atm.press, na.rm = TRUE)
+  ), by = .(USAFID, STATE)]
+```
+
+```{r}
+#Usng the quantile() function
+met_stations[, temp_50:= quantile(temp, probs = 0.5, na.rm = TRUE)]
+met_stations[, wind.sp_50:= quantile(wind.sp, probs = 0.5, na.rm = TRUE)]
+met_stations[, atm.press_50:= quantile(atm.press, probs = 0.5, na.rm = TRUE)]
+```
+
+```{r}
+met_stations[which.min(abs(temp - temp_50))]
+met_stations[which.min(abs(wind.sp - wind.sp_50))]
+met_stations[which.min(abs(atm.press - atm.press_50))]
+#These three stations are not coincide.
+```
+
+## **Q2: Representative station per state**
+
+```{r}
+#Find the median station for each state
+met_stations[, temp_50_2:= quantile(temp, probs = 0.5, na.rm = TRUE), by = STATE]
+met_stations[, wind.sp_50.2:= quantile(wind.sp, probs = 0.5, na.rm = TRUE), by = STATE]
+met_stations[, atm.press_50_2:= quantile(atm.press, probs = 0.5, na.rm = TRUE), by = STATE]
+```
+
+```{r}
+met_stations[, tempdif:= which.min(abs(temp - temp_50_2)), by = STATE]
+met_stations[, recordid := 1:.N, by = STATE]
+met_temp <- met_stations[recordid == tempdif, .(USAFID, temp, temp_50_2, STATE)]
+met_temp
+```
+
+```{r}
+met_stations[, tempdif:= which.min(abs(wind.sp - wind.sp_50.2)), by = STATE]
+met_stations[recordid == tempdif, .(USAFID, wind.sp, wind.sp_50.2, by=STATE)]
+```
+
+```{r}
+met_stations[, tempdif:= which.min(abs(atm.press - atm.press_50_2)), by = STATE]
+met_stations[recordid == tempdif, .(USAFID, atm.press, atm.press_50_2, by = STATE)]
+```
+
+## **Q3: In the middle?**
+
+```{r}
+met_stations <- unique(met[, .(USAFID, STATE, lon, lat)])
+met_stations[, n := 1:.N, by = USAFID]
+met_stations <- met_stations[n == 1]
+```
+
+```{r}
+met_stations[, lat_mid := quantile(lat, probs = 0.5, na.rm = TRUE), by = STATE]
+met_stations[, lon_mid := quantile(lon, probs = 0.5, na.rm = TRUE), by = STATE]
+```
+
+```{r}
+#Calculate the distance
+met_stations[,  distance := sqrt((lat-lat_mid)^2 + (lon-lon_mid)^2)]
+met_stations[, minrecord := which.min(distance), by = STATE]
+met_stations[, n := 1:.N, by = STATE]
+met_location <- met_stations[n == minrecord, .(USAFID, STATE, lon, lat)]
+```
+
+```{r}
+stations2 <- met[, .(USAFID, lat, lon, STATE)][, .SD[1], by = "USAFID"]
+
+met_temp <- merge(
+  x = met_temp,
+  y = stations2,
+  by = "USAFID",
+  all.x = TRUE, all.y = FALSE)
+```
+
+```{r}
+library(leaflet)
+
+dat1 <- met_location[, .(lon, lat)]
+dat1[, type := "Center of the state"]
+
+dat2 <- met_temp[, .(lon, lat)]
+dat2[, type := "Center of the temperature"]
+
+dat <- bind_rows(dat1, dat2)
+```
+
+```{r}
+rh_pal <- colorFactor(c('pink', 'purple'), domain = as.factor(dat$type))
+leaflet(dat) %>%
+  addProviderTiles("OpenStreetMap") %>%
+  addCircles(lng = ~lon, lat = ~lat, color=~rh_pal(type), 
+             opacity=1,fillOpacity=1, radius=500)
+```
+
+## **Q4: Means of means**
+
+```{r}
+#Compute the average temperature for each state
+temp_ave <- met[, .(temp_ave = mean(temp, na.rm = TRUE)), by = STATE]
+
+#Classify the states based on the given temperature criteria
+temp_ave[, temp_ave_level := fifelse(temp_ave < 20, "low",
+         fifelse(temp_ave >= 20 & temp_ave < 25, "Mid", "High"))]
+```
+
+```{r}
+met[, temp_ave := fcoalesce(temp, mean(temp, na.rm = TRUE)),
+      by = STATE]
+
+met_ldt <- lazy_dt(met, immutable = FALSE)
+met_ldt %>%
+  group_by(STATE, year, month, day) %>%
+  mutate(
+    temp_ave2 = coalesce(temp, mean(temp, na.rm = TRUE))
+    ) %>% collect()
+```
+
+```{r}
+summary_table <- met[temp_ave, on = "STATE", nomatch = 0][, .(
+  temp_ave = mean(temp, na.rm = TRUE),
+  wind.sp_ave = mean(wind.sp, na.rm = TRUE),
+  atm.press_ave = mean(atm.press, na.rm = TRUE)
+  ), by = temp_ave_level]
+
+```
