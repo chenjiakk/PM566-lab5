@@ -3,6 +3,7 @@ title: "Lab5"
 author: "Chenjia Kuang"
 format: html
 editor: visual
+embed-resources: true
 ---
 
 ## Setup in R
